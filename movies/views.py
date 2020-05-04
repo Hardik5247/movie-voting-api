@@ -36,3 +36,11 @@ class MovieListView(APIView):
         movies = Movie.objects.all()
         serializer = MovieSerializer(movies, many=True)
         return Response(serializer.data)
+
+class MovieVoteAPIView(APIView):
+    def post(self, request, pk):
+        movie = get_object_or_404(Movie, pk=pk)
+        movie.votes += 1
+        movie.save()
+        serializer = MovieSerializer(movie)
+        return Response(serializer.data)
